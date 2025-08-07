@@ -3,20 +3,25 @@ import os
 import requests
 
 def generate_log(data):
+    if not isinstance(data, list):
+        raise ValueError("generate_log requires a list of strings")
+
     log_data = [
         "User logged in",
         "User updated profile",
         "Report exported"
     ]
 
-    filename = f"log_{datetime.now().strftime('%Y%m%d')}.txt"
+    today = datetime.now().strftime("%Y%m%d")
+    filename = f"log_{today}.txt"
 
     with open(filename, 'w') as file:
-        for entry in log_data:
+        for entry in data:
             file.write(f"{entry}\n")
+
     print(f"Log written to {filename}")
 
-    pass
+    return filename
 
 def fetch_data():
     response = requests.get("https://jsonplaceholder.typicode.com/posts/1")
